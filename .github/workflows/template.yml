@@ -27,7 +27,7 @@ jobs:
 
       # Pull official Hashicorp Packer container
       - name: Run Packer Container - Build and Deploy
-        uses: docker://hasicorp/packer:light
+        uses: docker://hashicorp/packer:light
         
       # Grab the env variables from deployment
         env: 
