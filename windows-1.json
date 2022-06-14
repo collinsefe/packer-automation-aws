@@ -1,7 +1,7 @@
 {
 "variables": {
-"aws_access_key": "AKIAQJ3QBPYFENXFYAGZ",
-"aws_secret_key": "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",
+"aws_access_key": "",
+"aws_secret_key": "",
 "destination_regions": "eu-west-1,eu-west-2,eu-west-3"
 },
 "builders": [{
@@ -11,6 +11,8 @@
     "source_ami": "ami-0f8f14284458dda65",
     "iam_instance_profile": "Corighose-EcsInstanceRole",
     "ami_name": "packer-win-{{timestamp}}",
+    "access_key": "{{user, access_key}}",
+    "secret_key": "{{user, secret_key}}",
     "user_data_file": "windows1-ud.txt",
     "communicator": "winrm",
     "winrm_username": "Administrator",
