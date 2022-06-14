@@ -1,7 +1,8 @@
 {
 "variables": {
 "aws_access_key": "",
-"aws_secret_key": ""
+"aws_secret_key": "",
+"destination_regions": "eu-west-1,eu-west-2,eu-west-3"
 },
 "builders": [{
     "type": "amazon-ebs",
