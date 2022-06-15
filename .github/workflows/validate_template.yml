@@ -29,6 +29,6 @@ jobs:
 
       # Pull official Hashicorp Packer Docker container
       - name: Runs Packer Container - validate template
-        uses: docker://hashicorp/docker:light
+        uses: docker://hashicorp/packer:light
         with:
           args: "validate /github/workspace/windows1-json"
