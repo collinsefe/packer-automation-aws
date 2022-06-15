@@ -12,8 +12,6 @@
     "iam_instance_profile": "Corighose-EcsInstanceRole",
     "ami_name": "packer-win-{{timestamp}}",
     "user_data_file": "windows1-ud.txt",
-    "aws_access_key": "${{ secrets.aws_access_key }}",
-    "aws_secret_key": "${{ secrets.aws_secret_key }}",
     "communicator": "winrm",
     "winrm_username": "Administrator",
     "force_deregister": "true",
