@@ -7,8 +7,10 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
+    paths: 'windows-1.json'
   pull_request:
     branches: [ "main" ]
+    paths: 'windows-1.json'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -31,7 +33,7 @@ jobs:
         
       # Grab the env variables from deployment
         env: 
-          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}"
-          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}"
+          AWS_ACCESS_KEY: "${{ secrets.AWS_ACCESS_KEY }}"
+          AWS_SECRET_KEY: "${{ secrets.AWS_SECRET_KEY }}"
         with:
           args: "build /github/workspace/windows-1.json"
