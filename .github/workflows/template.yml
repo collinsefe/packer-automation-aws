@@ -37,4 +37,5 @@ jobs:
           aws-region: eu-west-2
 
       - name: build the packer image
-        run: "packer build /github/workspace/windows-1.json"
+        run: 
+          packer build /github/workspace/windows-1.json
