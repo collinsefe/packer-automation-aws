@@ -36,4 +36,6 @@ jobs:
       # Pull official Hashicorp Packer container
       - name: Run Packer Container - Build and Deploy
         uses: docker://hashicorp/packer:light
+      
+      - name: build the packer image
         run: "build /github/workspace/windows-1.json"
