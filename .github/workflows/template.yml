@@ -28,18 +28,12 @@ jobs:
       - uses: actions/checkout@v3
        
       - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: arn:aws:iam::123456789100:role/my-github-actions-role
-        aws-region: us-east-2
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::021172944394:role/github-actions-role
+          aws-region: eu-west-2
 
       # Pull official Hashicorp Packer container
       - name: Run Packer Container - Build and Deploy
         uses: docker://hashicorp/packer:light
-        
-      # Grab the env variables from deployment
-        env: 
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        with:
-          args: "build /github/workspace/windows-1.json"
+        args: "build /github/workspace/windows-1.json"
