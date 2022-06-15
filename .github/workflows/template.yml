@@ -25,17 +25,20 @@ jobs:
       id-token: write
       contents: read
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-       
+      - name: Checkout
+        uses: actions/checkout@v3
+      
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: arn:aws:iam::021172944394:role/github-actions-role
           aws-region: eu-west-2
+          
+      - name: Display Identity
+        run: aws sts get-caller-identity
 
       - name: build the packer image
-        run: 
-          packer build /github/workspace/windows-1.json
+        run: packer build /github/workspace/windows-1.json
+          
+          
