@@ -14,8 +14,6 @@
     "user_data_file": "windows1-ud.txt",
     "communicator": "winrm",
     "winrm_username": "Administrator",
-    "aws_access_key": "${{ secrets.aws_access_key }}",
-    "aws_secret_key": "${{ secrets.aws_secret_key }}",
     "force_deregister": "true",
     "force_delete_snapshot": "true"
   }],
