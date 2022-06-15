@@ -36,4 +36,4 @@ jobs:
       # Pull official Hashicorp Packer container
       - name: Run Packer Container - Build and Deploy
         uses: docker://hashicorp/packer:light
-        args: "build /github/workspace/windows-1.json"
+        run: "build /github/workspace/windows-1.json"
