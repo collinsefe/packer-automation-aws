@@ -33,7 +33,7 @@ jobs:
         
       # Grab the env variables from deployment
         env: 
-          AWS_ACCESS_KEY: "${{ secrets.AWS_ACCESS_KEY }}"
-          AWS_SECRET_KEY: "${{ secrets.AWS_SECRET_KEY }}"
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
         with:
           args: "build /github/workspace/windows-1.json"
