@@ -1,7 +1,7 @@
 {
 "variables": {
- "aws_access_key": "${{ secrets.aws_access_key }}",
- "aws_secret_key": "${{ secrets.aws_secret_key }}",
+ "aws_access_key": "",
+ "aws_secret_key": "",
 "destination_regions": "eu-west-1,eu-west-2,eu-west-3"
 },
 "builders": [{
@@ -14,6 +14,8 @@
     "user_data_file": "windows1-ud.txt",
     "communicator": "winrm",
     "winrm_username": "Administrator",
+    "aws_access_key": "${{ secrets.aws_access_key }}",
+    "aws_secret_key": "${{ secrets.aws_secret_key }}",
     "force_deregister": "true",
     "force_delete_snapshot": "true"
   }],
