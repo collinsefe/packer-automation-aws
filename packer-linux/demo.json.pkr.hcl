@@ -12,9 +12,34 @@ locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
 }
 
+variable "iam_instance_profile_name" {
+  type    = string
+  default = "mp-packer-profile"
+}
+
+variable "security_group_id" {
+  type    = string
+  default = "sg-0cc1ea54dcf9a5628"
+}
+
+variable "subnet_id" {
+  type    = string
+  default = "subnet-0b3b943b67728deb5"
+}
+
+variable "vpc_id" {
+  type    = string
+  default = "vpc-0a878b83e5183e49c"
+}
+
+variable "instance_type" {
+  type    = string
+  default = "t2.medium"
+}
+
 variable "ami_prefix" {
   type    = string
-  default = "mupando-demo-packer-ubuntu-aws"
+  default = "mupando-demo-packer-ubuntu-ami"
 }
 
 variable "tags" {
@@ -45,12 +70,13 @@ data "amazon-ami" "ubuntu-ami" {
 source "amazon-ebs" "ubuntu" {
   ami_name        = "${var.ami_prefix}-${local.timestamp}"
   ami_description = "Ubuntu Image from Packer build demo"
-  instance_type   = "t2.medium"
-  subnet_id       = "subnet-080be922806ba9147"
-  vpc_id          = "vpc-0a878b83e5183e49c"
+  instance_type   = var.instance_type
+  subnet_id       = var.subnet_id 
+  vpc_id          = var.vpc_id  
   region          = var.region
+  security_group_id = var.security_group_id
   source_ami      = data.amazon-ami.ubuntu-ami.id
-  skip_create_ami = false
+  skip_create_ami = true
   ssh_username    = "ubuntu"
   tags            = var.tags
   ssh_timeout     = "30m"

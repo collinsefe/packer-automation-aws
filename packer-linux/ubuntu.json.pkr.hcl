@@ -4,13 +4,8 @@ packer {
       source  = "github.com/hashicorp/amazon"
       version = "~> 1"
     }
-    azure = {
-      source  = "github.com/hashicorp/azure"
-      version = "~> 1"
-    }
   }
 }
-
 
 locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
@@ -18,36 +13,39 @@ locals {
 
 variable "ami_prefix" {
   type    = string
-  default = "mupando-packer-ubuntu-aws"
+  default = "mupando-ubuntu-packer-ami"
+}
+
+variable "iam_instance_profile_name" {
+  type    = string
+  default = "mp-packer-profile"
+}
+
+variable "security_group_id" {
+  type    = string
+  default = "sg-0cc1ea54dcf9a5628"
+}
+
+variable "subnet_id" {
+  type    = string
+  default = "subnet-0b3b943b67728deb5"
+}
+
+variable "vpc_id" {
+  type    = string
+  default = "vpc-0a878b83e5183e49c"
 }
 
 variable "instance_type" {
-  type        = string
-  default     = "t2.micro"
-  description = "description of the `foo` variable"
+  type    = string
+  default = "t2.medium"
 }
-
 
 variable "apache_zip" {
   type    = string
   default = "../hashicorp/packer/assets/index.html"
 }
 
-variable "ami_name" {
-  type    = string
-  default = "the default value of the `foo` variable"
-}
-
-variable "vpc_id" {
-  type    = string
-  default = "vpc-0a878b83e5183e49c"
-
-}
-
-variable "subnet_id" {
-  type    = string
-  default = "subnet-080be922806ba9147"
-}
 variable "tags" {
   type = map(string)
   default = {
@@ -59,16 +57,15 @@ variable "tags" {
   }
 }
 
-
 variable "ami_regions" {
   default = ["eu-west-2"]
 }
 
-
 data "amazon-ami" "ubuntu-ami" {
   filters = {
     virtualization-type = "hvm"
-    name                = "ubuntu/images/*/*ubuntu-noble-24.04-amd64-server-*"
+    # name                = "ubuntu/images/*/*ubuntu-noble-24.04-amd64-server-*"
+     name                = "ubuntu/images/*ubuntu-jammy-22.04-amd64-server-*"
     root-device-type    = "ebs"
   }
   owners      = ["amazon"]
@@ -86,16 +83,13 @@ source "amazon-ebs" "ubuntu" {
   subnet_id       = var.subnet_id
   instance_type   = "t2.micro"
   region          = "eu-west-2"
-  #   ami_regions     = var.ami_regions
+  #ami_regions     = var.ami_regions
   skip_create_ami = true
-  #   boot_encryption = true
   source_ami                  = data.amazon-ami.ubuntu-ami.id
   associate_public_ip_address = true
   ssh_username                = "ubuntu"
   tags                        = var.tags
 }
-
-
 
 build {
   sources = [
@@ -110,7 +104,7 @@ build {
       "sudo apt-get upgrade -y",
       "sudo apt-get install -y nginx"
     ]
-    pause_before = "30s"
+    pause_before = "10s"
   }
 
   provisioner "file" {

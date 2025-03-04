@@ -57,7 +57,7 @@ locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
 
 source "amazon-ebs" "ebs" {
   ami_description       = "Mupando Custom Windows AMI built by Packer"
-  ami_name              = "mupando-windows-packer-${local.timestamp}"
+  ami_name              = "mupando-windows-packer-ami-${local.timestamp}"
   subnet_id             = "subnet-0b3b943b67728deb5"
   vpc_id                = "vpc-0a878b83e5183e49c"
   security_group_id     = "sg-0cc1ea54dcf9a5628"
@@ -65,9 +65,9 @@ source "amazon-ebs" "ebs" {
   force_deregister      = "true"
   iam_instance_profile  = "mp-packer-profile"
   instance_type         = "t2.medium"
-  # skip_create_ami             = true
+  skip_create_ami             = false
   region                      = "eu-west-2"
-  source_ami                  = data.amazon-ami.aws-windows-ssh.id #var.ami_id
+  source_ami                  = data.amazon-ami.aws-windows-ssh.id 
   ami_virtualization_type     = "hvm"
   associate_public_ip_address = true
   communicator                = "ssh"
