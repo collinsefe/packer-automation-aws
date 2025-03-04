@@ -118,6 +118,11 @@ build {
     destination = "/tmp"
   }
 
+  provisioner "breakpoint" {
+    disable = true
+    note    = "validate files are uploaded"
+  }
+
   provisioner "shell" {
     inline = [
       "echo Installing webserver",
@@ -126,5 +131,9 @@ build {
       "sudo chown www-data:www-data /var/www/html",
       "sudo chmod 644 /var/www/html"
     ]
+  }
+
+    post-processor "manifest" {
+    output = "./manifest-ubuntu.json"
   }
 }

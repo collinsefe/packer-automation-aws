@@ -17,12 +17,6 @@ variable "ami_prefix" {
   default = "mupando-demo-packer-ubuntu-aws"
 }
 
-variable "instance_type" {
-  type        = string
-  default     = "t2.micro"
-  description = "description of the `foo` variable"
-}
-
 variable "tags" {
   type = map(string)
   default = {
@@ -34,12 +28,9 @@ variable "tags" {
   }
 }
 
-
-
 variable "region" {
   default = "eu-west-2"
 }
-
 
 data "amazon-ami" "ubuntu-ami" {
   filters = {
@@ -55,24 +46,20 @@ source "amazon-ebs" "ubuntu" {
   ami_name        = "${var.ami_prefix}-${local.timestamp}"
   ami_description = "Ubuntu Image from Packer build demo"
   instance_type   = "t2.medium"
-  subnet_id = "subnet-080be922806ba9147"
-vpc_id = "vpc-0a878b83e5183e49c"
+  subnet_id       = "subnet-080be922806ba9147"
+  vpc_id          = "vpc-0a878b83e5183e49c"
   region          = var.region
   source_ami      = data.amazon-ami.ubuntu-ami.id
   skip_create_ami = false
   ssh_username    = "ubuntu"
   tags            = var.tags
-#   ami_wait_timeout = "30m" 
+  ssh_timeout     = "30m"
 }
-
-
 
 build {
   sources = [
     "source.amazon-ebs.ubuntu"
   ]
-
-
 
   provisioner "shell" {
     inline = [
@@ -87,27 +74,28 @@ build {
     ]
   }
 
+    provisioner "breakpoint" {
+    disable = true
+    note    = "validate files are uploaded"
+  }
+
   provisioner "file" {
     source      = "assets"
     destination = "/tmp"
   }
 
-    provisioner "shell" {
-  inline = [
-    "echo Installing webserver",
-    "sudo cp /tmp/assets/index.html /var/www/html/index.html",
-    "sudo cp /tmp/assets/index.jpg /var/www/html/index.jpg",
-    "sudo systemctl reload nginx"
-  ]
-}
+  provisioner "shell" {
+    inline = [
+      "echo Installing webserver",
+      "sudo cp /tmp/assets/index.html /var/www/html/index.html",
+      "sudo cp /tmp/assets/index.jpg /var/www/html/index.jpg",
+      "sudo systemctl reload nginx"
+    ]
+  }
 
   post-processor "manifest" {
     output = "./manifest-demo.json"
-    strip_path = true
-    custom_data = {
-    my_custom_data = "example"
-    }
+  }
 }
 
-}
 
