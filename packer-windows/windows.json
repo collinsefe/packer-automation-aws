@@ -1,0 +1,38 @@
+{
+"variables": {},
+"builders": [{
+    "type": "amazon-ebs",
+    "region": "eu-west-2",
+    "instance_type": "t2.micro",
+    "source_ami": "al2023-ami-2023.6.20250107.0-kernel-6.1-x86_64",
+    "ami_description": "Mupando Custom AMI built by Packer",
+    "subnet_id": "subnet-085cbaa7a693fb7ba",  
+    "vpc_id": "vpc-0024afecefce2db51",  
+    "security_group_ids": "sg-0bf4e2fc944c877b1",
+    "iam_instance_profile": "mupando-packer-profile",
+    "ami_name": "mupando-packer-ami-{{timestamp}}",
+    "user_data_file": "enable_winrm.ps1",
+    "communicator": "winrm",
+    "winrm_username": "Administrator",
+    "winrm_password": "RcSecurity@2025",
+    "winrm_timeout": "5m",
+    "force_deregister": "true",
+    "force_delete_snapshot": "true",
+    "tags": {
+      "Name": "packer-instance"
+    }
+  }],
+  provisioner "windows-restart" {
+    restart_check_command = "powershell -command \"& {Write-Output 'restarted.'}\""
+  }
+
+  provisioner "windows-update" {
+  }
+
+  "provisioners": [{
+    "type": "powershell",
+    "scripts": [
+      "windows1-install.ps1"
+    ]
+  }]
+}

@@ -1,0 +1,29 @@
+{
+"variables": {},
+"builders": [{
+    "type": "amazon-ebs",
+    "region": "eu-west-2",
+    "instance_type": "t2.micro",
+    "source_ami": "ami-0a89c0e1fe86ef74e",
+    "ami_description": "Mupando Custom AMI built by Packer",
+    "subnet_id": "subnet-085cbaa7a693fb7ba",  
+    "vpc_id": "vpc-0024afecefce2db51",  
+    "security_group_ids": "sg-0bf4e2fc944c877b1",
+    "iam_instance_profile": "mupando-packer-profile",
+    "ami_name": "mupando-packer-ami-{{timestamp}}",
+    "user_data_file": "user-data.sh",
+    "ssh_username": "ec2-user",
+    "communicator": "ssh",
+    "force_deregister": "true",
+    "force_delete_snapshot": "true",
+    "tags": {
+      "Name": "packer-instance"
+    }
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "scripts": [
+      "user-data.sh"
+    ]
+  }]
+}
