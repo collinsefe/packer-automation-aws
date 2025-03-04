@@ -64,7 +64,6 @@ variable "ami_regions" {
 data "amazon-ami" "ubuntu-ami" {
   filters = {
     virtualization-type = "hvm"
-    # name                = "ubuntu/images/*/*ubuntu-noble-24.04-amd64-server-*"
      name                = "ubuntu/images/*ubuntu-jammy-22.04-amd64-server-*"
     root-device-type    = "ebs"
   }

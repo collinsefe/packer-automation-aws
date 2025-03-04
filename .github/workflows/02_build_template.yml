@@ -30,8 +30,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::021172944394:role/github-actions-role
-          aws-region: eu-west-2
+          role-to-assume: {{ secret AWS_ASSUME_ROLE }}
+          aws-region: {{ secret AWS_REGION }}
           
       - name: Display Identity
         run: aws sts get-caller-identity
