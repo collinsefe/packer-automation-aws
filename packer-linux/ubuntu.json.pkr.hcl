@@ -64,7 +64,7 @@ variable "ami_regions" {
 data "amazon-ami" "ubuntu-ami" {
   filters = {
     virtualization-type = "hvm"
-     name                = "ubuntu/images/*ubuntu-jammy-22.04-amd64-server-*"
+    name                = "ubuntu/images/*ubuntu-jammy-22.04-amd64-server-*"
     root-device-type    = "ebs"
   }
   owners      = ["amazon"]
@@ -78,12 +78,11 @@ source "null" "ubuntu" {
 source "amazon-ebs" "ubuntu" {
   ami_name        = "${var.ami_prefix}-${local.timestamp}"
   ami_description = "Ubuntu Image from Packer build demo"
+  region          = "eu-west-2"
   vpc_id          = var.vpc_id
   subnet_id       = var.subnet_id
-  instance_type   = "t2.micro"
-  region          = "eu-west-2"
-  #ami_regions     = var.ami_regions
-  skip_create_ami = true
+  instance_type   = "t2.medium"
+  skip_create_ami             = true
   source_ami                  = data.amazon-ami.ubuntu-ami.id
   associate_public_ip_address = true
   ssh_username                = "ubuntu"
@@ -126,7 +125,7 @@ build {
     ]
   }
 
-    post-processor "manifest" {
+  post-processor "manifest" {
     output = "./manifest-ubuntu.json"
   }
 }

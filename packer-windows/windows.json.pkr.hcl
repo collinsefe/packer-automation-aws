@@ -99,4 +99,7 @@ build {
     script = "files/prepareimage.ps1"
   }
 
+ post-processor "manifest" {
+    output = "./manifest-windows.json"
+  }
 }
