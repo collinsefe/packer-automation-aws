@@ -21,18 +21,5 @@
     "tags": {
       "Name": "packer-instance"
     }
-  }],
-  provisioner "windows-restart" {
-    restart_check_command = "powershell -command \"& {Write-Output 'restarted.'}\""
-  }
-
-  provisioner "windows-update" {
-  }
-
-  "provisioners": [{
-    "type": "powershell",
-    "scripts": [
-      "windows1-install.ps1"
-    ]
   }]
 }

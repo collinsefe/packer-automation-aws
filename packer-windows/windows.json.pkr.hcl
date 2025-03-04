@@ -47,12 +47,6 @@ variable "vpc_id" {
   default = "vpc-0c66e7b4f002ea43e"
 }
 
-variable "image_name" {
-  type    = string
-  default = "Windows Server 2022 image with ssh"
-}
-
-
 locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
 
 source "amazon-ebs" "ebs" {
@@ -65,7 +59,7 @@ source "amazon-ebs" "ebs" {
   force_deregister      = "true"
   iam_instance_profile  = "mp-packer-profile"
   instance_type         = "t2.medium"
-  skip_create_ami             = false
+  skip_create_ami             = true
   region                      = "eu-west-2"
   source_ami                  = data.amazon-ami.aws-windows-ssh.id 
   ami_virtualization_type     = "hvm"
@@ -84,7 +78,7 @@ source "amazon-ebs" "ebs" {
   }
 
   tags = {
-    Name      = "${var.image_name}"
+    Name      = "mupando-windows-packer-ami-${local.timestamp}"
     BuildTime = "${local.timestamp}"
   }
 }
@@ -93,8 +87,7 @@ build {
   sources = ["source.amazon-ebs.ebs"]
 
   provisioner "windows-update" {}
-
-
+§§
   provisioner "powershell" {
     script = "files/windows1-install.ps1"
   }
