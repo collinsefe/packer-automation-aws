@@ -1,65 +1,32 @@
-# Packer with AWS
+# Packer Automation for Windows
 
-## What is Packer ?
-Packer is an agnostic Image builder developed by Hasicorp.
+## Project Description
 
-## What can it do ?
-Packer will take an exising AWS AMI, tailor it to your needs and repackgage it as your own custom AMI.
-In Short it will create repeatable AMI's with all your common post EC2 instance install requirments, which will lower the time your provisioning team need to get the instance ready for your Dev's.
+This repository contains the Packer configuration files and scripts for automating the creation of Windows-based AMIs (Amazon Machine Images) on AWS. The project uses Packer to configure Windows instances, install necessary software, and prepare custom AMIs for use in cloud environments.
 
-## What will this repo do ?
-This repo will create your own custom Windows server AMI within AWS and carry the following steps:
-- Push a user-data powershell script to setup winrp, which allows Packer to connect to windows.
-- Apply a role to the temp build instance to avoid the need to use hard coded username and password credentials. 
-- Run a further powershell script which installs Python, upgrades PIP and installs AWS CLI.
-- Files and binaries are copied from an AWS S3 bucket.
+The goal of this project is to streamline the process of creating consistent and repeatable Windows-based AMIs that can be used for production, testing, or development environments.
 
-<p align="center"> 
-<img src="packer-diag.jpg">
-</p>
+## Prerequisites
 
-## Great, how do I create my custom AMI ?
-- Install Packer on your Windows or Linux host: https://www.packer.io/docs/install/index.html
-- Ensure your host has a role associated to it or AWS configure is setup with appropriate permissions for iam:PassRole (See below).
-- Clone this Repo. 
-- Edit the packer file windows-1.json and modify for your region of choice and AWS AMI id.
-- Run: packer build windows-1.json
-- This Reop was fully tested with Packer v1.2.3
+Before you begin, make sure you have the following tools installed on your local machine:
 
-## What's this about IAM roles ?
+- [Packer](https://www.packer.io/downloads) - Tool for automating the creation of machine images.
+- [Terraform](https://www.terraform.io/downloads) - Infrastructure as code tool for provisioning resources.
+- [AWS CLI](https://aws.amazon.com/cli/) - AWS Command Line Interface for interacting with AWS services.
+- [AWS Account](https://aws.amazon.com/) - Active AWS account with necessary IAM permissions.
+- [Git](https://git-scm.com/) - To clone the repository.
 
-- You need to ensure your host running Packer has IAM rights to allow an iam:Passrole as per below: 
+## Installation Instructions
 
-```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "PackerIAMPassRole",
-            "Effect": "Allow",
-            "Action": "iam:PassRole",
-            "Resource": ["*"]
-        }
-    ]
-}
-```
+### Step 1: Clone the Repository
 
-- You also need to create an IAM role for your new Packer instance (e.g. packer-s3-ro) to read your S3 bucket binaries/files.
+Clone the repository to your local machine:
 
-```json
-{
-   "Version": "2012-10-17",
-   "Statement": [
-     {
-       "Effect": "Allow",
-       "Action": ["s3:GetObject"],
-       "Resource": ["arn:aws:s3:::<BUCKET-NAME>"]
-     }
-   ]
- }
-```
+```bash
+git clone https://github.com/collinsefe/packer-automation-aws.git
+cd packer-automation-aws
 
-- Ensure you set all IAM policies down to minimum requirements after testing
+Run:
+packer build <TEMPLATE_FILE>
 
-You can tailor this to work with Linux quite easily. In fact Linux AMI's are much easier to create as they don't require wimrm.\
-Linux uses ssh and doesn't require a user-data file to set up the intial communication between the packer builder host and temporary ec2 builder instance.
+
