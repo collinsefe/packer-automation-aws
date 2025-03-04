@@ -31,4 +31,14 @@ jobs:
       - name: Runs Packer Container - validate template
         uses: docker://hashicorp/packer:light
         with:
-          args: "validate /github/workspace/windows-1.json"
+          args: "validate windows.json.pkr.hcl"
+          
+      
+      - name: Runs Packer Container - validate template
+        uses: docker://hashicorp/packer:light
+        with:
+          args: "validate ubuntu.json.pkr.hcl"
+              
+
+
+
